@@ -1,3 +1,13 @@
+import {
+    sortArr,
+    listArr,
+    itemExist,
+    exist,
+    print
+} from './functions.js';
+
+/* the use strict should be used after import else it won't work */
+"use strict";
 /*
     Creating a program to store data
     from users input:
@@ -10,95 +20,6 @@
     6. Get data separately e.g only name...
     7. Delete any one of their data e.g only name, or all of them together.
 */
-"use strict";
-
-/*
-iterate the array
-check each number if greater than the other
-store the largest in a list an delete from previous list
-*/
-
-
-// This function looks for the minimum number in an array
-function arr_min_num(arr) {
-
-    // Note that each block of code can take only one return
-    let i = 0;
-    let min = 0;
-
-    while (i < arr.length-1) {
-        if (i > 0) {
-            min = Math.min(min, arr[i + 1]);
-            i++;
-        } else {
-            min = Math.min(arr[i], arr[i + 1]);
-            i++;
-        }
-    }
-    return min;
-    i = 0; min = 0;
-}
-
-// This function looks for the maximum number in an array
-function arr_max_num(arr) {
-
-    // Note that each block of code can take only one retu>
-    let i = 0;
-    let max = 0;
-
-    while (i < arr.length-1) {
-        if (i > 0) {
-            max = Math.max(max, arr[i + 1]);
-            i++;
-        } else {
-            max = Math.max(arr[i], arr[i + 1]);
-            i++;
-        }
-    }
-    return max;
-    i = 0; max = 0;
-}
-
-/*
-sort array by looping it to find the min number (using
-the arr_min_num function, pushing to an empty list then
-deleting from the original array
-Then return new array
-*/
-
-function sort_arr(myArr, rev = false) {
-    let j = 0;
-    const newArr = [];
-
-    if (rev == true && typeof(myArr[j]) == "string") {
-        myArr.reverse();
-        return myArr;
-    } else if (typeof(myArr[j]) == "string") {
-        myArr.sort();
-        return myArr;
-    } else if (myArr.length == 1) {
-        return myArr;
-    }
-
-    while (j < myArr.length) {
-        if (myArr.length == 1) {
-            newArr.push(myArr);
-            break;
-        } else if (rev == true) {
-            let max = arr_max_num(myArr);
-            newArr.push(max);
-            myArr.splice(myArr.indexOf(max), 1);
-        } else {
-            let min = arr_min_num(myArr);
-            newArr.push(min);
-            myArr.splice(myArr.indexOf(min), 1);
-        }
-    }
-
-    return newArr;
-}
-
-// End of experiment
 
 
 let date = new Date();
@@ -119,20 +40,26 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
     calculates how long they were in school
 */
 
+const students = [];
+const verified = {};
+
+
 function Person(firstName, lastName, age, gender) {
+    // use this object to get names and list data with these names
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
     this.gender = gender;
+    this.department = null;
     this.subjects = ["mathematics",
         "english",
         "data processing"];
     this.info = {
-        firstname: firstName,
-        lastname: lastName,
-        age: age,
-        gender: gender,
-        subjects: sort_arr(this.subjects)
+        firstname: this.firstName,
+        lastname: this.lastName,
+        age: this.age,
+        gender: this.gender,
+        subjects: sortArr(this.subjects)
     };
 }
 
@@ -143,104 +70,141 @@ Person.prototype.fullName = function() {
 
 Person.prototype.setDepartment = function(department) {
     if (department.toLowerCase() == "arts") {
+        this.info.department = department;
         const subjects = ["literature",
             "government",
             "agriculture",
             "crs"];
         this.info.subjects = subjects.concat(this.subjects);
-        this.info.subjects = sort_arr(this.info.subjects);
+        this.info.subjects = sortArr(this.info.subjects);
     } else if (department.toLowerCase() == "science") {
+        this.info.department = department;
         const subjects = ["biology",
             "chemistry",
             "physics",
             "technical drawing"];
         this.info.subjects = subjects.concat(this.subjects);
-        this.info.subjects = sort_arr(this.info.subjects);
+        this.info.subjects = sortArr(this.info.subjects);
     } else {
         return "Invalid department!";
     }
 }
 
+Person.prototype.addSubject = function(subject) {
+    let exist = itemExist(this.info.subjects, subject);
+    if (exist == true) {
+        return subject + " already exist.";
+    } else {
+        this.info.subjects.push(subject);
+        return subject + " was successfully added!";
+    }
+}
+
 Person.prototype.removeSubject = function(subject) {
-    let exist = item_exist(this.info.subjects, subject);
+    let exist = itemExist(this.info.subjects, subject);
     if (exist == true) {
         this.info.subjects.splice(this.info.subjects.indexOf(subject), 1);
-        console.log(subject + " was successfully removed!");
+        return subject + " was successfully removed!";
     } else {
-        console.log(subject + " does not exist.");
+        return subject + " does not exist.";
     }
 }
 
 Person.prototype.getData = function(data = false) {
-    sort_arr(this.info.subjects);
+    sortArr(this.info.subjects);
+
     if (data) {
-        let d = "";
-        if (item_exist(this.info, data) == true) {
+        if (itemExist(this.info, data) == true) {
             if (Array.isArray(this.info[data]) == true) {
-                let lst = list_arr(this.info[data]);
-                console.log(this.fullName() + " " +data + ": " + lst);
+                let lst = listArr(this.info[data]);
+                return this.fullName() + " " +data + ": " + lst;
             } else {
-                console.log(this.fullName() + " " + data + ": " + this.info[data]);
+                return this.fullName() + " " + data + ": " + this.info[data];
             }
         } else {
-            console.log(data.toUpperCase() + " does not exist in user's data!");
-        } 
+            return data.toUpperCase() + " does not exist in user's data!";
+        }
     } else {
         for (let i in this.info) {
             if (Array.isArray(this.info[i]) == true) {
-                let lst = list_arr(this.info[i]);
-                console.log(i + ": " + lst);
+                let lst = listArr(this.info[i]);
+                print(i + ": " + lst);
             } else {
-                console.log(i + ": " + this.info[i]);
+                print(i + ": " + this.info[i]);
             }
         }
     }
 }
+
+
 // End Person Methods
-
-// Assistant functions
-
-function list_arr(arr) {
-    let newArr = arr.join(", ");
-    return newArr;
-}
-
-function item_exist(arr, item) {
-    let i = 0;
-    if (Array.isArray(arr) == true) {
-        for (let a of arr) {
-            i++;
-            if (item == a) {
-                return true;
-                break;
-            } else {
-                if (arr.length == i) {
-                    return false;
-                }
-            }
-        }
-    } else {
-        for (let a in arr) {
-            i++;
-            if (item.toLowerCase() == a) {
-                return true;
-                break;
-            } else {
-                if (Object.keys(arr).length == i) {
-                    return false;
-                }
-            }
-        }
-    }
-}
-
-
-// End Assistant functions
 
 const student1 = new Person("Jerry", "Aribidara", 19, "Male");
 const student2 = new Person("Wonder", "Aribidara", 18, "Male");
+const student3 = new Person("Comfort", "Aribidara", 16, "Female");
 
-student1.setDepartment("arts");
-student1.removeSubject("english");
-console.log(student1.getData());
-//console.log(student2.getData());
+
+//student1.getData();
+// Try, getting data through a person's firstname
+// Either get the full details or a specific detail about the person e.g subjects
+
+const user = {
+    name: "Jerry",
+    age: 19
+}
+
+exist("age", user);
+
+
+
+
+
+let f = "Jerry";
+let l = "Aribidara";
+let a = 19;
+let g = "Male";
+let i = 0;
+
+function setUser(firstname, lastname, age, gender) {
+    students.push(firstname);
+
+    const person = {
+        firstname: firstname,
+        lastname: lastname,
+        age: age,
+        gender: gender
+    }
+
+    verified[i] = person;
+
+    const user = new Person(firstname, lastname, age, gender);
+    i++;
+    user;
+}
+
+function fullData(studentName, data = false) {
+    let o = 0;
+    while (o < Object.keys(verified).length) {
+        if (verified[o]["firstname"] == studentName) {
+            print("True");
+
+            break;
+        } else {
+            // check if the end of the object has been reached
+            if (o == Object.keys(verified).length-1) {
+                print("False");
+                break;
+            } else {
+                o++;
+            }
+        }
+    }
+}
+
+setUser("Jerry", "Aribidara", 19, "Male");
+setUser("Wonder", "Aribidara", 18, "Male");
+setUser("Comfort", "Aribidara", 16, "Female");
+
+fullData("Comfort");
+
+//print(JSON.stringify(verified)); to
