@@ -8,8 +8,6 @@ store the largest in a list an delete from previous list
 
 // This function looks for the minimum number in an array
 function arrMinNum(arr) {
-
-    // Note that each block of code can take only one return
     let i = 0;
     let min = 0;
 
@@ -26,10 +24,9 @@ function arrMinNum(arr) {
     i = 0; min = 0;
 }
 
+
 // This function looks for the maximum number in an array
 function arrMaxNum(arr) {
-
-    // Note that each block of code can take only one retu>
     let i = 0;
     let max = 0;
 
@@ -46,13 +43,13 @@ function arrMaxNum(arr) {
     i = 0; max = 0;
 }
 
+
 /*
 sort array by looping it to find the min number (using
 the arrMinNum function, pushing to an empty list then
 deleting from the original array
 Then return new array
 */
-
 export function sortArr(myArr, rev = false) {
     let j = 0;
     const newArr = [];
@@ -85,11 +82,14 @@ export function sortArr(myArr, rev = false) {
     return newArr;
 }
 
+
+// This basically lists the array items in an organized form using the join()
 export function listArr(arr) {
     // List array items
     let newArr = arr.join(", ");
     return newArr;
 }
+
 
 export function itemExist(arr, item) {
     // Checks if an item exists in an array or object
@@ -107,6 +107,7 @@ export function itemExist(arr, item) {
             }
         }
     } else {
+        // This block is for object, only check if key exists
         for (let a in arr) {
             i++;
             if (item.toLowerCase() == a) {
@@ -121,15 +122,17 @@ export function itemExist(arr, item) {
     }
 }
 
+
+// This function checks if a key exist in an object and returns the value
 export function exist(item, obj) {
     let a = 0;
     for (let o in obj) {
-        if (item==o) {
-            print(item + ": " + obj[item]);
+        if (item == o) {
+            return obj[item];
             break;
         } else {
             if (a == Object.keys(obj).length-1) {
-                print(item + " does not exist!");
+                return false;
                 break;
             } else {
                 a++;

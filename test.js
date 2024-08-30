@@ -21,13 +21,14 @@ import {
     7. Delete any one of their data e.g only name, or all of them together.
 */
 
-
+/*
 let date = new Date();
 let y, m, d, t;
 y = date.getFullYear();
 m = date.getMonth();
 d = date.getDay();
 t = date.getTime();
+*/
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -143,28 +144,16 @@ const student1 = new Person("Jerry", "Aribidara", 19, "Male");
 const student2 = new Person("Wonder", "Aribidara", 18, "Male");
 const student3 = new Person("Comfort", "Aribidara", 16, "Female");
 
+student2.setDepartment("science");
 
+//print(student2.getData());
 //student1.getData();
 // Try, getting data through a person's firstname
 // Either get the full details or a specific detail about the person e.g subjects
 
-const user = {
-    name: "Jerry",
-    age: 19
-}
 
-exist("age", user);
-
-
-
-
-
-let f = "Jerry";
-let l = "Aribidara";
-let a = 19;
-let g = "Male";
+// if this line is inside the setUser, it will not work because the i++ will not update it inside the loop but start from 0 again
 let i = 0;
-
 function setUser(firstname, lastname, age, gender) {
     students.push(firstname);
 
@@ -179,15 +168,26 @@ function setUser(firstname, lastname, age, gender) {
 
     const user = new Person(firstname, lastname, age, gender);
     i++;
-    user;
+    return user;
 }
 
 function fullData(studentName, data = false) {
     let o = 0;
     while (o < Object.keys(verified).length) {
+        /*
+        Now lets check since the studentName is verified, we can get the data from the key i.e o, associated with that name
+        */
         if (verified[o]["firstname"] == studentName) {
-            print("True");
-
+            let firstname = verified[o]["firstname"];
+            let lastname = verified[o]["lastname"];
+            let age = verified[o]["age"];
+            let gender = verified[o]["gender"];
+            const verifiedStudent = new Person(firstname, lastname, age, gender);
+            if (data) {
+                print(verifiedStudent.getData(data));
+            } else {
+                print(verifiedStudent.getData());
+            }
             break;
         } else {
             // check if the end of the object has been reached
@@ -201,10 +201,20 @@ function fullData(studentName, data = false) {
     }
 }
 
+// Because of the way i linked the setUser to Person object, it now has access to all its methods
 setUser("Jerry", "Aribidara", 19, "Male");
 setUser("Wonder", "Aribidara", 18, "Male");
 setUser("Comfort", "Aribidara", 16, "Female");
 
-fullData("Comfort");
 
-//print(JSON.stringify(verified)); to
+
+// Open this comment to check the verified students
+//print(JSON.stringify(verified));
+
+//It finally works... Hurray!!!
+fullData("Jerry", "age");
+
+
+
+
+//print(JSON.stringify(verified));
