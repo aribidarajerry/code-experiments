@@ -1,10 +1,11 @@
 "use strict";
+
+
 /*
 iterate the array
 check each number if greater than the other
 store the largest in a list an delete from previous list
 */
-
 
 // This function looks for the minimum number in an array
 function arrMinNum(arr) {
@@ -45,10 +46,10 @@ function arrMaxNum(arr) {
 
 
 /*
-sort array by looping it to find the min number (using
-the arrMinNum function, pushing to an empty list then
-deleting from the original array
-Then return new array
+    Sort array by looping it to find the min number (using
+    the arrMinNum function, pushing to an empty list then
+    deleting from the original array
+    Then return new array
 */
 export function sortArr(myArr, rev = false) {
     let j = 0;
@@ -91,8 +92,8 @@ export function listArr(arr) {
 }
 
 
+// Checks if an item exists in an array or object
 export function itemExist(arr, item) {
-    // Checks if an item exists in an array or object
     let i = 0;
     if (Array.isArray(arr) == true) {
         for (let a of arr) {
@@ -124,7 +125,7 @@ export function itemExist(arr, item) {
 
 
 // This function checks if a key exist in an object and returns the value
-export function exist(item, obj) {
+export function objValue(item, obj) {
     let a = 0;
     for (let o in obj) {
         if (item == o) {
@@ -139,18 +140,9 @@ export function exist(item, obj) {
             }
         }
     }
-    /*
-    for (let item in obj) {
-        if (Array.isArray(obj[item]) == true) {
-            let lst = listArr(obj[item]);
-            print(item + ": " + lst);
-        } else {
-            print(item + ": " + obj[item]);
-        }
-    }
-    */
 }
 
+// For easier display of variables or data rather than console.log 😏
 export function print(message) {
     console.log(message);
 }

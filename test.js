@@ -2,23 +2,24 @@ import {
     sortArr,
     listArr,
     itemExist,
-    exist,
+    objValue,
     print
 } from './functions.js';
 
 /* the use strict should be used after import else it won't work */
 "use strict";
-/*
-    Creating a program to store data
-    from users input:
 
-    1. Name, age, gender and subjects
-    2. Sort them
-    3. There should be an id used to identify each user
-    4. Add, delete, correct, update, some should be not be able to be corrected
-    5. Display each users data together
-    6. Get data separately e.g only name...
-    7. Delete any one of their data e.g only name, or all of them together.
+
+/*
+    Creating a program to store student's data:
+
+    1. Name, age, gender and subjects ✔️
+    2. There should be an id used to identify each user ✔️
+    3. Update data, add/remove subjects some should be not be able to be corrected ✔️
+    4. Display each users data together ✔️
+    5. Get data separately e.g only name...✔️
+    6. Delete student. ✔️
+    7. Get the date each student was enrolled
 */
 
 /*
@@ -28,30 +29,27 @@ y = date.getFullYear();
 m = date.getMonth();
 d = date.getDay();
 t = date.getTime();
-*/
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+*/
 
 /*
-    Create an object that collects users info,
-    groups them into various subject from department,
-    calculate how many students
-    get the nationality of each new person objects
+    Create an object that collects students info, ✔️
+    Update students info ✔️
+    groups them into various subject from department, ✔️
     calculates how long they were in school
 */
 
-const students = [];
+// Database to host all studrents data
 const verified = {};
 
-
 function Person(firstName, lastName, age, gender) {
-    // use this object to get names and list data with these names
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
     this.gender = gender;
     this.department = null;
+    // Default subjects for all students
     this.subjects = ["mathematics",
         "english",
         "data processing"];
@@ -103,7 +101,9 @@ Person.prototype.addSubject = function(subject) {
 
 Person.prototype.removeSubject = function(subject) {
     let exist = itemExist(this.info.subjects, subject);
-    if (exist == true) {
+    if (itemExist(this.subjects, subject) == true) {
+        return subject + " is a compulsory subject and cannot be removed!";
+    } else if (exist == true) {
         this.info.subjects.splice(this.info.subjects.indexOf(subject), 1);
         return subject + " was successfully removed!";
     } else {
@@ -137,84 +137,122 @@ Person.prototype.getData = function(data = false) {
     }
 }
 
-
 // End Person Methods
 
-const student1 = new Person("Jerry", "Aribidara", 19, "Male");
-const student2 = new Person("Wonder", "Aribidara", 18, "Male");
-const student3 = new Person("Comfort", "Aribidara", 16, "Female");
-
-student2.setDepartment("science");
-
-//print(student2.getData());
-//student1.getData();
-// Try, getting data through a person's firstname
-// Either get the full details or a specific detail about the person e.g subjects
 
 
-// if this line is inside the setUser, it will not work because the i++ will not update it inside the loop but start from 0 again
+
+
+
+
+// Try, getting data through a person's firstname ✔️
+// Either get the full details or a specific detail about the person e.g subjects ✔️
+
+/*
+    First use this function to register new student and link it to the Person object and access all its methods
+    If student has the same name, better use another name
+*/
+// if this line is inside the registerStudent, it will not work because the i++ will not update it inside the loop but start from 0 again
 let i = 0;
-function setUser(firstname, lastname, age, gender) {
-    students.push(firstname);
-
+function registerStudent(firstname, lastname, age, gender) {
     const person = {
         firstname: firstname,
         lastname: lastname,
         age: age,
         gender: gender
     }
-
-    verified[i] = person;
-
+    // Replace the first instance of null value with a new student
+    let o = 0;
+    for (let x in verified) {
+        if (verified[x]["firstname"] == firstname) {
+            print(firstname + " is already a student, preferably use other names!");
+            o++;
+            break;
+        } else if (verified[x] == "null") {
+            verified[x] = person;
+            o++;
+            break;
+        }
+    }
+    if (o == 0) {
+        verified[i] = person;
+    }
     const user = new Person(firstname, lastname, age, gender);
     i++;
     return user;
 }
 
-function fullData(studentName, data = false) {
-    let o = 0;
-    while (o < Object.keys(verified).length) {
-        /*
-        Now lets check since the studentName is verified, we can get the data from the key i.e o, associated with that name
-        */
-        if (verified[o]["firstname"] == studentName) {
-            let firstname = verified[o]["firstname"];
-            let lastname = verified[o]["lastname"];
-            let age = verified[o]["age"];
-            let gender = verified[o]["gender"];
-            const verifiedStudent = new Person(firstname, lastname, age, gender);
-            if (data) {
-                print(verifiedStudent.getData(data));
-            } else {
-                print(verifiedStudent.getData());
-            }
+
+function deleteStudent(firstname) {
+    for (let o = 0; o < Object.keys(verified).length; o++) {
+        if (verified[o]["firstname"] == firstname.toLowerCase()) {
+            verified[o] = "null";
+            return firstname + " successfully deleted!";
             break;
         } else {
-            // check if the end of the object has been reached
             if (o == Object.keys(verified).length-1) {
-                print("False");
+                print(firstname + " does not exist!");
                 break;
-            } else {
-                o++;
             }
         }
     }
 }
 
-// Because of the way i linked the setUser to Person object, it now has access to all its methods
-setUser("Jerry", "Aribidara", 19, "Male");
-setUser("Wonder", "Aribidara", 18, "Male");
-setUser("Comfort", "Aribidara", 16, "Female");
+
+function studentData(studentName) {
+    for (let o = 0; o < Object.keys(verified).length; o++) {
+        /*
+        Now lets check since the studentName is verified, we can get the data from the key i.e o, associated with that name
+        */
+        if (verified[o]["firstname"] == studentName.toLowerCase()) {
+            let firstname = verified[o]["firstname"];
+            let lastname = verified[o]["lastname"];
+            let age = verified[o]["age"];
+            let gender = verified[o]["gender"];
+            const verifiedStudent = new Person(firstname, lastname, age, gender);
+            return verifiedStudent;
+            break;
+        } else if (verified[o] == "null") {
+            verified[o] == "null";
+        } else {
+            if (o == Object.keys(verified).length-1) {
+                print(studentName + " does not exist!");
+                break;
+            }
+        }
+    }
+}
+
+
+function verifiedStudents() {
+    print(JSON.stringify(verified));
+}
+
+
+// Caplculate the length of verified students excluding the null values
+function studentsPopulation() {
+    let length = 0;
+    for (let i = 0; i < Object.keys(verified).length; i++) {
+        if (verified[i] == "null") {
+            length++;
+        }
+    }
+    length = Object.keys(verified).length - length;
+    print("The number of verified students is " + length);
+}
 
 
 
-// Open this comment to check the verified students
-//print(JSON.stringify(verified));
 
-//It finally works... Hurray!!!
-fullData("Jerry", "age");
+//    Testing program...
 
+let student1 = registerStudent("joseph", "john", 24, "male");
+let student2 = registerStudent("jacob", "paul", 14, "male");
+let student3 = registerStudent("queen", "elizabeth", 74, "female");
+let student4 = registerStudent("gideon", "king", 30, "male");
+let student5 = registerStudent("paulina", "mary", 25, "female");
+let student6 = registerStudent("favour", "mariam", 38, "female");
+let students7 = registerStudent("daniel", "chukwu", 19, "male");
 
-
-
-//print(JSON.stringify(verified));
+verifiedStudents();
+studentsPopulation();
