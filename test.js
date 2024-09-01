@@ -183,6 +183,25 @@ function registerStudent(firstname, lastname, age, gender) {
 }
 
 
+function updateStudent(firstname, key, value) {
+    let length = Object.keys(verified).length;
+    let y = null;
+
+    for (let x = 0; x < length+1; x++) {
+        let name = verified[x]["firstname"];
+        if (name !== value && name === firstname) {
+            y = x;
+            break;
+        } else {
+            continue;
+        }
+    }
+    if (y) {
+        verified[y][key] = value;
+    }
+}
+
+
 function deleteStudent(firstname) {
     for (let o = 0; o < Object.keys(verified).length; o++) {
         if (verified[o]["firstname"] == firstname.toLowerCase()) {
@@ -242,8 +261,6 @@ function studentsPopulation() {
 }
 
 
-
-
 //    Testing program...
 
 let student1 = registerStudent("joseph", "john", 24, "male");
@@ -253,6 +270,7 @@ let student4 = registerStudent("gideon", "king", 30, "male");
 let student5 = registerStudent("paulina", "mary", 25, "female");
 let student6 = registerStudent("favour", "mariam", 38, "female");
 let students7 = registerStudent("daniel", "chukwu", 19, "male");
+
 
 verifiedStudents();
 studentsPopulation();
