@@ -185,19 +185,27 @@ function registerStudent(firstname, lastname, age, gender) {
 
 function updateStudent(firstname, key, value) {
     let length = Object.keys(verified).length;
-    let y = null;
-
-    for (let x = 0; x < length+1; x++) {
-        let name = verified[x]["firstname"];
-        if (name !== value && name === firstname) {
-            y = x;
+    let e = false;
+    let x = false;
+    for (let i = 0; i < length; i++) {
+        if (key == "subjects") {
+            x = true;
+            e = true;
             break;
-        } else {
-            continue;
+        } else if (verified[i]["firstname"] == value) {
+            e = true;
         }
     }
-    if (y) {
-        verified[y][key] = value;
+    if (e == false) {
+	for (let i = 0; i < length; i++) {
+            if (verified[i]["firstname"] == firstname) {
+		verified[i][key] = value;
+            }
+        }
+    } else if (x == true) {
+        print("Subjects can only be removed or added to!")
+    } else {
+	print("Invalid firstname or updated name already exist!");
     }
 }
 
@@ -259,18 +267,3 @@ function studentsPopulation() {
     length = Object.keys(verified).length - length;
     print("The number of verified students is " + length);
 }
-
-
-//    Testing program...
-
-let student1 = registerStudent("joseph", "john", 24, "male");
-let student2 = registerStudent("jacob", "paul", 14, "male");
-let student3 = registerStudent("queen", "elizabeth", 74, "female");
-let student4 = registerStudent("gideon", "king", 30, "male");
-let student5 = registerStudent("paulina", "mary", 25, "female");
-let student6 = registerStudent("favour", "mariam", 38, "female");
-let students7 = registerStudent("daniel", "chukwu", 19, "male");
-
-
-verifiedStudents();
-studentsPopulation();
