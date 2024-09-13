@@ -197,15 +197,15 @@ function updateStudent(firstname, key, value) {
         }
     }
     if (e == false) {
-	for (let i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             if (verified[i]["firstname"] == firstname) {
-		verified[i][key] = value;
+                verified[i][key] = value;
             }
         }
     } else if (x == true) {
         print("Subjects can only be removed or added to!")
     } else {
-	print("Invalid firstname or updated name already exist!");
+        print("Invalid firstname or updated name already exist!");
     }
 }
 
@@ -260,6 +260,9 @@ function verifiedStudents() {
 function studentsPopulation() {
     let length = 0;
     for (let i = 0; i < Object.keys(verified).length; i++) {
+        /*
+        When a student is deleted, it's position becomes null so we can't count that as a student
+        */
         if (verified[i] == "null") {
             length++;
         }
@@ -267,3 +270,18 @@ function studentsPopulation() {
     length = Object.keys(verified).length - length;
     print("The number of verified students is " + length);
 }
+/*
+    This is how to register a student
+    
+let student1 = registerStudent("jerry","aribidara",19,"male");
+
+    To get the students data, use the firstname of the student
+    
+let student = studentData("jerry");
+
+    The student has been linked to my Person object so you can call any Person method
+
+student.setDepartment("arts");
+print(student.getData());
+
+*/
